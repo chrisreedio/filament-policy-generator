@@ -13,36 +13,36 @@ class {{Model}}Policy
 
     public function viewAny(User $user): bool
     {
-        //
+        return $user->can('view_any_{{modelVariable}}');
     }
 
     public function view(?User $user, {{Model}} ${{modelVariable}}): bool
     {
-        //
+        return $user->can('view_{{modelVariable}}');
     }
 
     public function create(User $user): bool
     {
-        //
+        return $user->can('create_{{modelVariable}}');
     }
 
     public function update(User $user, {{Model}} ${{modelVariable}}): bool
     {
-        //
+        return $user->can('update_{{modelVariable}}');
     }
 
     public function delete(User $user, {{Model}} ${{modelVariable}}): bool
     {
-        //
+        return $user->can('delete_{{modelVariable}}');
     }
 
     public function restore(User $user, {{Model}} ${{modelVariable}}): bool
     {
-        //
+        return $user->can('restore_{{modelVariable}}');
     }
 
     public function forceDelete(User $user, {{Model}} ${{modelVariable}}): bool
     {
-        //
+        return $user->can('force_delete_{{modelVariable}}');
     }
 }
