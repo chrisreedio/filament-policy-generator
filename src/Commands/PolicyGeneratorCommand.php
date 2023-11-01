@@ -3,9 +3,7 @@
 namespace ChrisReedIO\PolicyGenerator\Commands;
 
 use ChrisReedIO\PolicyGenerator\PolicyGenerator;
-use Filament\Facades\Filament;
 use Illuminate\Console\Command;
-use Touhidurabir\StubGenerator\Facades\StubGenerator;
 
 class PolicyGeneratorCommand extends Command
 {

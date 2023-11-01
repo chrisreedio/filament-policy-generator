@@ -6,59 +6,62 @@ use Filament\Facades\Filament;
 use Filament\Resources\Resource;
 use Touhidurabir\StubGenerator\Facades\StubGenerator;
 
-use function Laravel\Prompts\{info, warning};
+use function Laravel\Prompts\info;
+use function Laravel\Prompts\warning;
 
 class PolicyGenerator
 {
-	public static function generateAll(bool $overwrite = false)
-	{
-		$resources = Filament::getResources();
-		foreach ($resources as $resource) {
-			self::generate($resource, $overwrite);
-		}
-	}
+    public static function generateAll(bool $overwrite = false)
+    {
+        $resources = Filament::getResources();
+        foreach ($resources as $resource) {
+            self::generate($resource, $overwrite);
+        }
+    }
 
-	public static function generate(Resource $resource, bool $overwrite = false): bool
-	{
-		if (self::exists($resource) && !$overwrite) {
-			warning("Policy for {$resource::getModel()} already exists.");
-			return false;
-		}
-		// Prepare to populate the stub
-		$model = $resource::getModel();
-		$modelName = class_basename($model);
-		$policyName = $modelName . 'Policy';
-		$stubDir = __DIR__ . '/stubs/';
-		$stubFile = $stubDir . ($modelName === 'User' ? 'User' : 'Generic') . 'Policy.stub';
-		$destPath = base_path('app/Policies/');
+    public static function generate(Resource $resource, bool $overwrite = false): bool
+    {
+        if (self::exists($resource) && ! $overwrite) {
+            warning("Policy for {$resource::getModel()} already exists.");
 
-		info("Generating {$policyName}...");
-		// Load the stub's placeholders
-		$replacements = [
-			'Namespace' => config('policy-generator.namespace', 'App'),
-			'UserModel' => config('policy-generator.user_model', 'App\Models\User'),
-			'PolicyModel' => $model,
-			'Model' => $modelName,
-			'modelVariable' => lcfirst($modelName),
-		];
+            return false;
+        }
+        // Prepare to populate the stub
+        $model = $resource::getModel();
+        $modelName = class_basename($model);
+        $policyName = $modelName . 'Policy';
+        $stubDir = __DIR__ . '/stubs/';
+        $stubFile = $stubDir . ($modelName === 'User' ? 'User' : 'Generic') . 'Policy.stub';
+        $destPath = base_path('app/Policies/');
 
-		// Generate the policy
-		StubGenerator::from($stubFile, true) // the stub file path
-			->to($destPath, true, true) // the store directory path
-			->as($policyName) // the generatable file name without extension
-			->replace($overwrite) // to replace the file if already exist // TODO - Check if it exists and ask to overwrite
-			->withReplacers($replacements) // the stub replacing params
-			->save(); // save the file
+        info("Generating {$policyName}...");
+        // Load the stub's placeholders
+        $replacements = [
+            'Namespace' => config('policy-generator.namespace', 'App'),
+            'UserModel' => config('policy-generator.user_model', 'App\Models\User'),
+            'PolicyModel' => $model,
+            'Model' => $modelName,
+            'modelVariable' => lcfirst($modelName),
+        ];
 
-		return true;
-	}
+        // Generate the policy
+        StubGenerator::from($stubFile, true) // the stub file path
+            ->to($destPath, true, true) // the store directory path
+            ->as($policyName) // the generatable file name without extension
+            ->replace($overwrite) // to replace the file if already exist // TODO - Check if it exists and ask to overwrite
+            ->withReplacers($replacements) // the stub replacing params
+            ->save(); // save the file
 
-	public static function exists(Resource $resource): bool
-	{
-		$model = $resource::getModel();
-		$modelName = class_basename($model);
-		$policyName = $modelName . 'Policy';
-		$destPath = base_path('app/Policies/');
-		return file_exists($destPath . $policyName . '.php');
-	}
+        return true;
+    }
+
+    public static function exists(Resource $resource): bool
+    {
+        $model = $resource::getModel();
+        $modelName = class_basename($model);
+        $policyName = $modelName . 'Policy';
+        $destPath = base_path('app/Policies/');
+
+        return file_exists($destPath . $policyName . '.php');
+    }
 }
