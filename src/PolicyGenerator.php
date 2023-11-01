@@ -29,7 +29,7 @@ class PolicyGenerator
         $model = $resource::getModel();
         $modelName = class_basename($model);
         $policyName = $modelName . 'Policy';
-        $stubDir = __DIR__ . '/stubs/';
+        $stubDir = __DIR__ . '/../stubs/';
         $stubFile = $stubDir . ($modelName === 'User' ? 'User' : 'Generic') . 'Policy.stub';
         $destPath = base_path('app/Policies/');
 
