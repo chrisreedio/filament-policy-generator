@@ -2,6 +2,8 @@
 
 namespace ChrisReedIO\PolicyGenerator;
 
+use ChrisReedIO\PolicyGenerator\Commands\PolicyGeneratorCommand;
+use ChrisReedIO\PolicyGenerator\Testing\TestsPolicyGenerator;
 use Filament\Support\Assets\AlpineComponent;
 use Filament\Support\Assets\Asset;
 use Filament\Support\Assets\Css;
@@ -13,8 +15,6 @@ use Livewire\Features\SupportTesting\Testable;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use ChrisReedIO\PolicyGenerator\Commands\PolicyGeneratorCommand;
-use ChrisReedIO\PolicyGenerator\Testing\TestsPolicyGenerator;
 
 class PolicyGeneratorServiceProvider extends PackageServiceProvider
 {
