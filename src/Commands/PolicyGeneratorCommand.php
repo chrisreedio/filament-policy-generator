@@ -21,7 +21,7 @@ class PolicyGeneratorCommand extends Command
             dump("{$resource} -> {$model}...");
 
             $policyName = class_basename($model) . 'Policy';
-            $stubFile = __DIR__ . '/stubs/GenericPolicy.stub.php';
+            $stubFile = __DIR__ . '/stubs/GenericPolicy.stub';
             $destPath = base_path('app/Policies/');
             dump("Generating {$policyName} from {$stubFile} to {$destPath}.");
             StubGenerator::from($stubFile, true) // the stub file path
