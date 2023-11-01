@@ -61,6 +61,7 @@ class PolicyGenerator
         $model = $resource::getModel();
         $modelName = class_basename($model);
         $policyName = $modelName . 'Policy';
+
         return config('policy-generator.namespace', 'App') . '\\Policies\\' . $policyName;
     }
 
