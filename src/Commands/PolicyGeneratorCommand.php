@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace ChrisReedIO\PolicyGenerator\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class PolicyGeneratorCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'filament-policy-generator';
 
     public $description = 'My command';
 
