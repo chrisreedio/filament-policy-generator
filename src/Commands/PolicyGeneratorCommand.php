@@ -4,6 +4,7 @@ namespace ChrisReedIO\PolicyGenerator\Commands;
 
 use Filament\Facades\Filament;
 use Illuminate\Console\Command;
+use Illuminate\Support\Str;
 use Touhidurabir\StubGenerator\Facades\StubGenerator;
 
 class PolicyGeneratorCommand extends Command
@@ -20,8 +21,11 @@ class PolicyGeneratorCommand extends Command
             dump("{$resource} -> {$model}...");
 
             $policyName = class_basename($model) . 'Policy';
-            StubGenerator::from('stubs/Policy.stub.php') // the stub file path
-                ->to(base_path('app/Policies/')) // the store directory path
+            $stubFile = __DIR__ . '/stubs/GenericPolicy.stub.php';
+            $destPath = base_path('app/Policies/');
+            dump("Generating {$policyName} from {$stubFile} to {$destPath}.");
+            StubGenerator::from($stubFile, true) // the stub file path
+                ->to($destPath, true, true) // the store directory path
                 ->as($policyName) // the generatable file name without extension 
                 // ->ext('php') // the file extension(optional, by default to php)
                 // ->noExt() // to remove the extension from the file name for the generated file like .env
@@ -32,5 +36,29 @@ class PolicyGeneratorCommand extends Command
         $this->comment('All done');
 
         return self::SUCCESS;
+    }
+
+    // From Filament Shield - https://github.com/bezhanSalleh/filament-shield/blob/3.x/src/Commands/Concerns/CanGeneratePolicy.php#L21C19-L21C19
+    protected function generatePolicyPath(array $entity): string
+    {
+        $path = (new \ReflectionClass($entity['fqcn']::getModel()))->getFileName();
+
+        if (Str::of($path)->contains(['vendor', 'src'])) {
+            $basePolicyPath = app_path(
+                (string) Str::of($entity['model'])
+                    ->prepend('Policies\\')
+                    ->replace('\\', DIRECTORY_SEPARATOR),
+            );
+
+            return "{$basePolicyPath}Policy.php";
+        }
+
+        /** @phpstan-ignore-next-line */
+        $basePath = Str::of($path)
+            ->replace('Models', 'Policies')
+            ->replaceLast('.php', 'Policy.php')
+            ->replace('\\', DIRECTORY_SEPARATOR);
+
+        return $basePath;
     }
 }
