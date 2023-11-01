@@ -3,6 +3,7 @@
 namespace ChrisReedIO\PolicyGenerator;
 
 use Filament\Facades\Filament;
+use Illuminate\Support\Str;
 use Touhidurabir\StubGenerator\Facades\StubGenerator;
 
 use function config;
@@ -42,6 +43,8 @@ class PolicyGenerator
             'UserModel' => config('policy-generator.user_model', 'App\Models\User'),
             'PolicyModel' => $model,
             'Model' => $modelName,
+            // 'modelVariable' => lcfirst($modelName),
+            'permissionModelVariable' => Str::snake($modelName),
             'modelVariable' => lcfirst($modelName),
         ];
 
