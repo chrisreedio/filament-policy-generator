@@ -37,28 +37,4 @@ class PolicyGeneratorCommand extends Command
 
         return self::SUCCESS;
     }
-
-    // From Filament Shield - https://github.com/bezhanSalleh/filament-shield/blob/3.x/src/Commands/Concerns/CanGeneratePolicy.php#L21C19-L21C19
-    protected function generatePolicyPath(array $entity): string
-    {
-        $path = (new \ReflectionClass($entity['fqcn']::getModel()))->getFileName();
-
-        if (Str::of($path)->contains(['vendor', 'src'])) {
-            $basePolicyPath = app_path(
-                (string) Str::of($entity['model'])
-                    ->prepend('Policies\\')
-                    ->replace('\\', DIRECTORY_SEPARATOR),
-            );
-
-            return "{$basePolicyPath}Policy.php";
-        }
-
-        /** @phpstan-ignore-next-line */
-        $basePath = Str::of($path)
-            ->replace('Models', 'Policies')
-            ->replaceLast('.php', 'Policy.php')
-            ->replace('\\', DIRECTORY_SEPARATOR);
-
-        return $basePath;
-    }
 }
