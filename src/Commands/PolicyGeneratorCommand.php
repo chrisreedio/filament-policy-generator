@@ -17,22 +17,22 @@ class PolicyGeneratorCommand extends Command
         $resources = Filament::getResources();
         foreach ($resources as $resource) {
             $model = $resource::getModel();
-            dump("{$resource} -> {$model}...");
+            // dump("{$resource} -> {$model}...");
 
             $modelName = class_basename($model);
             $policyName = $modelName . 'Policy';
             $stubFile = __DIR__ . '/stubs/GenericPolicy.stub';
             $destPath = base_path('app/Policies/');
-            dump("[$modelName] - Generating {$policyName} from {$stubFile} to {$destPath}.");
+            $this->info("Generating {$policyName}...");
             StubGenerator::from($stubFile, true) // the stub file path
                 ->to($destPath, true, true) // the store directory path
                 ->as($policyName) // the generatable file name without extension
                 // ->ext('php') // the file extension(optional, by default to php)
                 // ->noExt() // to remove the extension from the file name for the generated file like .env
                 ->withReplacers([
-                    '{{Namespace}}' => config('policy-generator.namespace', 'App'),
-                    '{{Model}}' => $modelName,
-                    '{{modelVariable}}' => lcfirst($modelName),
+                    'Namespace' => config('policy-generator.namespace', 'App'),
+                    'Model' => $modelName,
+                    'modelVariable' => lcfirst($modelName),
                 ]) // the stub replacing params
                 ->save(); // save the file
         }
