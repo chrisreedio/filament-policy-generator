@@ -3,7 +3,7 @@
 
 namespace {{Namespace}}\Policies;
 
-{{UserModelImport}}
+use {{UserModel}};
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class UserPolicy
