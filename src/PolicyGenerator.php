@@ -20,8 +20,9 @@ class PolicyGenerator
 
     public static function generate(string $resource, bool $overwrite = false): bool
     {
-        if (self::exists($resource) && !$overwrite) {
+        if (self::exists($resource) && ! $overwrite) {
             warning("Policy for {$resource::getModel()} already exists.");
+
             return false;
         }
 
@@ -60,6 +61,7 @@ class PolicyGenerator
         $modelName = class_basename($model);
         $policyName = $modelName . 'Policy';
         $destPath = base_path('app/Policies/');
+
         return file_exists($destPath . $policyName . '.php');
     }
 }
