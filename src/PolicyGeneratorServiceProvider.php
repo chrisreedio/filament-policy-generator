@@ -34,8 +34,8 @@ class PolicyGeneratorServiceProvider extends PackageServiceProvider
             ->hasInstallCommand(function (InstallCommand $command) {
                 $command
                     ->publishConfigFile()
-                    ->publishMigrations()
-                    ->askToRunMigrations()
+                    // ->publishMigrations()
+                    // ->askToRunMigrations()
                     ->askToStarRepoOnGitHub('chrisreedio/filament-policy-generator');
             });
 
@@ -103,8 +103,8 @@ class PolicyGeneratorServiceProvider extends PackageServiceProvider
     {
         return [
             // AlpineComponent::make('filament-policy-generator', __DIR__ . '/../resources/dist/components/filament-policy-generator.js'),
-            Css::make('filament-policy-generator-styles', __DIR__ . '/../resources/dist/filament-policy-generator.css'),
-            Js::make('filament-policy-generator-scripts', __DIR__ . '/../resources/dist/filament-policy-generator.js'),
+            // Css::make('filament-policy-generator-styles', __DIR__ . '/../resources/dist/filament-policy-generator.css'),
+            // Js::make('filament-policy-generator-scripts', __DIR__ . '/../resources/dist/filament-policy-generator.js'),
         ];
     }
 
