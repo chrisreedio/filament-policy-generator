@@ -3,7 +3,6 @@
 namespace ChrisReedIO\PolicyGenerator;
 
 use Filament\Facades\Filament;
-use Filament\Resources\Resource;
 use Touhidurabir\StubGenerator\Facades\StubGenerator;
 
 use function Laravel\Prompts\{info, warning};
@@ -18,7 +17,7 @@ class PolicyGenerator
 		}
 	}
 
-	public static function generate(Resource $resource, bool $overwrite = false): bool
+	public static function generate(string $resource, bool $overwrite = false): bool
 	{
 		if (self::exists($resource) && !$overwrite) {
 			warning("Policy for {$resource::getModel()} already exists.");
@@ -53,7 +52,7 @@ class PolicyGenerator
 		return true;
 	}
 
-	public static function exists(Resource $resource): bool
+	public static function exists(string $resource): bool
 	{
 		$model = $resource::getModel();
 		$modelName = class_basename($model);
