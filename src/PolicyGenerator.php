@@ -5,6 +5,7 @@ namespace ChrisReedIO\PolicyGenerator;
 use Filament\Facades\Filament;
 use Touhidurabir\StubGenerator\Facades\StubGenerator;
 
+use function config;
 use function Laravel\Prompts\info;
 use function Laravel\Prompts\warning;
 
@@ -53,6 +54,14 @@ class PolicyGenerator
             ->save(); // save the file
 
         return true;
+    }
+
+    public static function getPolicyName(string $resource): string
+    {
+        $model = $resource::getModel();
+        $modelName = class_basename($model);
+        $policyName = $modelName . 'Policy';
+        return config('policy-generator.namespace', 'App') . '\\Policies\\' . $policyName;
     }
 
     public static function exists(string $resource): bool
