@@ -4,7 +4,6 @@ namespace ChrisReedIO\PolicyGenerator\Commands;
 
 use Filament\Facades\Filament;
 use Illuminate\Console\Command;
-use Illuminate\Support\Str;
 use Touhidurabir\StubGenerator\Facades\StubGenerator;
 
 class PolicyGeneratorCommand extends Command
