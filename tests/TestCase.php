@@ -4,6 +4,7 @@ namespace ChrisReedIO\PolicyGenerator\Tests;
 
 use BladeUI\Heroicons\BladeHeroiconsServiceProvider;
 use BladeUI\Icons\BladeIconsServiceProvider;
+use ChrisReedIO\PolicyGenerator\PolicyGeneratorServiceProvider;
 use Filament\Actions\ActionsServiceProvider;
 use Filament\FilamentServiceProvider;
 use Filament\Forms\FormsServiceProvider;
@@ -18,7 +19,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Livewire\LivewireServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 use RyanChandler\BladeCaptureDirective\BladeCaptureDirectiveServiceProvider;
-use ChrisReedIO\PolicyGenerator\PolicyGeneratorServiceProvider;
 
 class TestCase extends Orchestra
 {
