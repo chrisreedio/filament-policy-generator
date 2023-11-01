@@ -29,8 +29,12 @@ class PolicyGeneratorCommand extends Command
                 ->as($policyName) // the generatable file name without extension
                 // ->ext('php') // the file extension(optional, by default to php)
                 // ->noExt() // to remove the extension from the file name for the generated file like .env
+                ->withOverride()
+                ->replace(true) // to replace the file if already exist // TODO - Check if it exists and ask to overwrite
                 ->withReplacers([
                     'Namespace' => config('policy-generator.namespace', 'App'),
+                    'UserModelImport' => 'use ' . config('policy-generator.user_model', 'App\Models\User') . ';',
+                    'PolicyModelImport' => $modelName === 'User' ? '' : 'use ' . $model . ';',
                     'Model' => $modelName,
                     'modelVariable' => lcfirst($modelName),
                 ]) // the stub replacing params

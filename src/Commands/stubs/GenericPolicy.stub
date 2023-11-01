@@ -3,8 +3,8 @@
 
 namespace {{Namespace}}\Policies;
 
-use {{Namespace}}\Models\User;
-use {{Namespace}}\Models\{{Model}};
+{{UserModelImport}}
+{{PolicyModelImport}}
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class {{Model}}Policy
