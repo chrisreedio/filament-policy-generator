@@ -2,25 +2,21 @@
 
 namespace ChrisReedIO\PolicyGenerator\Commands;
 
-use Filament\Facades\Filament;
+use ChrisReedIO\PolicyGenerator\PolicyGenerator;
 use Illuminate\Console\Command;
 
 class PolicyGeneratorCommand extends Command
 {
-    public $signature = 'policies:generate';
+    public $signature = 'policies:generate {--overwrite}';
 
     public $description = 'Generate policies for all Filament resources';
 
     public function handle(): int
     {
-        $resources = Filament::getResources();
-        foreach ($resources as $resource) {
-            $model = $resource::getModel();
-            dump("Generating policy for {$resource} -> {$model}...");
-            // TODO - Generate policy code here
-        }
+        $overwrite = $this->option('overwrite');
+        PolicyGenerator::generateAll($overwrite);
 
-        $this->comment('All done');
+        $this->comment('All policies generated!');
 
         return self::SUCCESS;
     }
