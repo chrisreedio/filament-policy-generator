@@ -23,8 +23,7 @@ class PolicyGenerator
     public static function generate(string $resource, bool $overwrite = false): bool
     {
         if (self::exists($resource) && ! $overwrite) {
-            warning("Policy for {$resource::getModel()} already exists.");
-
+            // warning("Policy for {$resource::getModel()} already exists.");
             return false;
         }
 
