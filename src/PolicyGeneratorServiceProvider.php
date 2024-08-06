@@ -58,9 +58,7 @@ class PolicyGeneratorServiceProvider extends PackageServiceProvider
         }
     }
 
-    public function packageRegistered(): void
-    {
-    }
+    public function packageRegistered(): void {}
 
     public function packageBooted(): void
     {
@@ -88,7 +86,7 @@ class PolicyGeneratorServiceProvider extends PackageServiceProvider
         }
 
         // Testing
-        Testable::mixin(new TestsPolicyGenerator());
+        Testable::mixin(new TestsPolicyGenerator);
     }
 
     protected function getAssetPackageName(): ?string
