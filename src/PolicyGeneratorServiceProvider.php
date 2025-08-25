@@ -33,7 +33,7 @@ class PolicyGeneratorServiceProvider extends PackageServiceProvider
             ->hasCommands($this->getCommands())
             ->hasInstallCommand(function (InstallCommand $command) {
                 $command
-                    ->publishConfigFile()
+                    // ->publishConfigFile()
                     // ->publishMigrations()
                     // ->askToRunMigrations()
                     ->askToStarRepoOnGitHub('chrisreedio/filament-policy-generator');
