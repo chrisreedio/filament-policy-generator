@@ -14,22 +14,40 @@ use Filament\Support\SupportServiceProvider;
 use Filament\Tables\TablesServiceProvider;
 use Filament\Widgets\WidgetsServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Filesystem\Filesystem;
 use Livewire\LivewireServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 use RyanChandler\BladeCaptureDirective\BladeCaptureDirectiveServiceProvider;
 
 class TestCase extends Orchestra
 {
+    protected string $originalBasePath;
+
+    protected string $temporaryBasePath;
+
     protected function setUp(): void
     {
         parent::setUp();
+
+        $this->originalBasePath = $this->app->basePath();
+        $this->temporaryBasePath = sys_get_temp_dir() . '/filament-policy-generator-' . bin2hex(random_bytes(8));
+        $this->app->setBasePath($this->temporaryBasePath);
 
         Factory::guessFactoryNamesUsing(
             fn (string $modelName) => 'ChrisReedIO\\PolicyGenerator\\Database\\Factories\\' . class_basename($modelName) . 'Factory'
         );
     }
 
-    protected function getPackageProviders($app)
+    protected function tearDown(): void
+    {
+        $this->app->setBasePath($this->originalBasePath);
+
+        (new Filesystem)->deleteDirectory($this->temporaryBasePath);
+
+        parent::tearDown();
+    }
+
+    protected function getPackageProviders($app): array
     {
         return [
             ActionsServiceProvider::class,
@@ -48,7 +66,7 @@ class TestCase extends Orchestra
         ];
     }
 
-    public function getEnvironmentSetUp($app)
+    public function getEnvironmentSetUp($app): void
     {
         config()->set('database.default', 'testing');
 
