@@ -12,7 +12,7 @@ use function Laravel\Prompts\info;
 
 class PolicyGenerator
 {
-    public static function generateAll(bool $overwrite = false): void
+    public static function generateAll(bool $overwrite = false)
     {
         $resources = Filament::getResources();
 
@@ -78,7 +78,7 @@ class PolicyGenerator
     /**
      * @param  array<string, string>  $replacements
      */
-    protected static function renderStub(string $stub, array $replacements): string
+    private static function renderStub(string $stub, array $replacements): string
     {
         $placeholders = array_map(
             fn (string $placeholder): string => '{{' . $placeholder . '}}',
