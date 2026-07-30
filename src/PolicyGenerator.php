@@ -3,18 +3,19 @@
 namespace ChrisReedIO\PolicyGenerator;
 
 use Filament\Facades\Filament;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
-use Touhidurabir\StubGenerator\Facades\StubGenerator;
 
+use function app;
 use function config;
 use function Laravel\Prompts\info;
-use function Laravel\Prompts\warning;
 
 class PolicyGenerator
 {
     public static function generateAll(bool $overwrite = false)
     {
         $resources = Filament::getResources();
+
         foreach ($resources as $resource) {
             self::generate($resource, $overwrite);
         }
@@ -27,7 +28,6 @@ class PolicyGenerator
             return false;
         }
 
-        // Prepare to populate the stub
         $model = $resource::getModel();
         $modelName = class_basename($model);
         $policyName = $modelName . 'Policy';
@@ -36,24 +36,22 @@ class PolicyGenerator
         $destPath = base_path('app/Policies/');
 
         info("Generating {$policyName}...");
-        // Load the stub's placeholders
+
         $replacements = [
             'Namespace' => config('policy-generator.namespace', 'App'),
             'UserModel' => config('policy-generator.user_model', 'App\Models\User'),
             'PolicyModel' => $model,
             'Model' => $modelName,
-            // 'modelVariable' => lcfirst($modelName),
             'permissionModelVariable' => Str::snake($modelName),
             'modelVariable' => lcfirst($modelName),
         ];
 
-        // Generate the policy
-        StubGenerator::from($stubFile, true) // the stub file path
-            ->to($destPath, true, true) // the store directory path
-            ->as($policyName) // the generatable file name without extension
-            ->replace($overwrite) // to replace the file if already exist // TODO - Check if it exists and ask to overwrite
-            ->withReplacers($replacements) // the stub replacing params
-            ->save(); // save the file
+        $filesystem = app(Filesystem::class);
+        $filesystem->ensureDirectoryExists($destPath);
+        $filesystem->put(
+            $destPath . $policyName . '.php',
+            self::renderStub($filesystem->get($stubFile), $replacements),
+        );
 
         return true;
     }
@@ -75,5 +73,18 @@ class PolicyGenerator
         $destPath = base_path('app/Policies/');
 
         return file_exists($destPath . $policyName . '.php');
+    }
+
+    /**
+     * @param  array<string, string>  $replacements
+     */
+    private static function renderStub(string $stub, array $replacements): string
+    {
+        $placeholders = array_map(
+            fn (string $placeholder): string => '{{' . $placeholder . '}}',
+            array_keys($replacements),
+        );
+
+        return str_replace($placeholders, array_values($replacements), $stub);
     }
 }
